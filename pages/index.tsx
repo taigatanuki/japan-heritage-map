@@ -26,18 +26,23 @@ export default function Home() {
     }, []);
 
     return (
-        <div>
-            <h1>日本の世界自然遺産</h1>
-            <ul>
-                {heritages.map((heritage) => (
-                    <li key={heritage.id}>
-                        {heritage.name} ({heritage.address})　＊緯度経度：（{heritage.lat}, {heritage.lng}）
-                    </li>
-                ))}
-            </ul>
-            <div>
-                <h1>日本の世界自然遺産マップ</h1>
+        <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+            <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">
+                日本の世界自然遺産
+            </h1>
+            <div className="w-full max-w-4xl h-96 bg-white rounded-lg overflow-hidden border border-gray-300">
                 <Map heritages={heritages} />
+            </div>
+            <div className="w-full max-w-4xl rounded-lg bg-white shadow-md p-6 mt-6">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">遺産リスト</h2>
+                <ul className="space-y-3">
+                    {heritages.map((heritage) => (
+                        <li key={heritage.id} className="p-4 bg-blue-100 rounded-lg shadow-sm border border-blue-200">
+                            <p className="text-lg font-medium text-blue-800">{heritage.name}</p>
+                            <p className="text-sm text-gray-600">{heritage.address}</p>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );

@@ -4,8 +4,8 @@ import "leaflet/dist/leaflet.css";
 
 // Markerに表示するアイコンの定義
 const customIcon = new L.Icon({
-    iconUrl: "/marker-icon.png", // publicフォルダに画像を配置
-    iconSize: [25, 41], // アイコンのサイズ
+    iconUrl: "/location.png", // publicフォルダに画像を配置
+    iconSize: [40, 40], // アイコンのサイズ
     iconAnchor: [12, 41], // アイコンのアンカー位置
     popupAnchor: [1, -34], // ポップアップのアンカー位置
     shadowUrl: "/marker-shadow.png", // 影の画像（不要なら削除）

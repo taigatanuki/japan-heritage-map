@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchHeritages } from "../utils/fetchHeritages";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const Map = dynamic(() => import("../components/Map"), { ssr: false });
 
@@ -9,11 +10,13 @@ type Heritage = {
     name: string;
     address: string;
     lat: number;
-    lng: number
+    lng: number;
+    imageUrl: string;
 }
 
 export default function Home() {
     const [heritages, setHeritages] = useState<Heritage[]>([]);
+    const [selectedId, setSelectedId] = useState<number | null>(null);// 現在選択されている世界遺産のIDを保存
     console.log("最初のデータ：", heritages);
 
     useEffect(() => {
@@ -31,15 +34,21 @@ export default function Home() {
                 日本の世界自然遺産
             </h1>
             <div className="w-full max-w-4xl h-96 bg-white rounded-lg overflow-hidden border border-gray-300">
-                <Map heritages={heritages} />
+                <Map heritages={heritages} selectedId={selectedId} setSelectedId={setSelectedId} />
             </div>
             <div className="w-full max-w-4xl rounded-lg bg-white shadow-md p-6 mt-6">
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">遺産リスト</h2>
                 <ul className="space-y-3">
                     {heritages.map((heritage) => (
-                        <li key={heritage.id} className="p-4 bg-blue-100 rounded-lg shadow-sm border border-blue-200">
-                            <p className="text-lg font-medium text-blue-800">{heritage.name}</p>
-                            <p className="text-sm text-gray-600">{heritage.address}</p>
+                        <li key={heritage.id} onClick={() => setSelectedId(heritage.id)} className={`p-4 rounded-lg shadow-sm border flex items-center space-x-4 cursor-pointer transition ${selectedId === heritage.id ? "bg-blue-200 border-blue-400" : " bg-blue-50 border-blue-200"}`}>
+                            <img src={heritage.imageUrl} alt={heritage.name} className="w-20 h-14 object-cover rounded-md" />
+                            <div>
+                                <p className="text-lg font-medium text-blue-800">{heritage.name}</p>
+                                <p className="text-sm text-gray-600">{heritage.address}</p>
+                                <Link href={`/heritage/${heritage.id}`} className="text-blue-500 hover:underline">
+                                    詳細を見る
+                                </Link>
+                            </div>
                         </li>
                     ))}
                 </ul>

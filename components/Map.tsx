@@ -27,6 +27,21 @@ type MapProps = {
     setSelectedId: (id:number | null) => void;
 }
 
+const MapMover = ({ heritages, selectedId }: { heritages: Heritage[]; selectedId: number | null;}) => {
+    const map = useMap();
+
+    useEffect(() => {
+        if(selectedId !== null) {
+            const selectedHeritage = heritages.find((h) => h.id === selectedId);
+            if(selectedHeritage) {
+                map.setView([selectedHeritage.lat, selectedHeritage.lng], 7, {animate: true});
+            }
+        }
+    }, [selectedId, heritages, map])
+
+    return null;
+};
+
 const Map = ({ heritages, selectedId, setSelectedId }: MapProps) => {
     return (
         <MapContainer center={[36.36744265225814, 137.89841440187962]} zoom={4} className="w-full h-full">
@@ -57,21 +72,6 @@ const Map = ({ heritages, selectedId, setSelectedId }: MapProps) => {
             <MapMover heritages={heritages} selectedId={selectedId} />
         </MapContainer>
     );
-};
-
-const MapMover = ({ heritages, selectedId }: { heritages: Heritage[]; selectedId: number | null;}) => {
-    const map = useMap();
-
-    useEffect(() => {
-        if(selectedId !== null) {
-            const selectedHeritage = heritages.find((h) => h.id === selectedId);
-            if(selectedHeritage) {
-                map.setView([selectedHeritage.lat, selectedHeritage.lng], 7, {animate: true});
-            }
-        }
-    }, [selectedId, heritages, map])
-
-    return null;
 };
 
 export default Map;

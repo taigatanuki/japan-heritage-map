@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { supabase } from "../../utils/supabase";
+import Link from "next/link";
+import Image from "next/image";
 
 type Heritage = {
     id: number;
@@ -44,13 +46,13 @@ export default function HeritageDetail() {
             <h1 className="text-4xl font-bold text-blue-700">{heritage.name}</h1>
             <p className="text-lg text-gray-600 mt-2">{heritage.address}</p>
 
-            <div className="w-full max-w-2xl h-96 bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 mt-6">
-                <img src={heritage.imageUrl} alt={heritage.name} className="w-full" />
+            <div className="w-full max-w-2xl h-96 bg-white shadow-md rounded-lg overflow-hidden border border-gray-300 mt-6 relative">
+                <Image src={heritage.imageUrl} alt={heritage.name} fill className="object-cover"/>
             </div>
 
-            <a href="/" className="mt-6 text-blue-500 hover:underline">
+            <Link href="/" className="mt-6 text-blue-500 hover:underline">
                 ⬅ トップに戻る
-            </a>
+            </Link>
         </div>
     );
 }

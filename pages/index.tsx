@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchHeritages } from "../utils/fetchHeritages";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Image from "next/image";
 
 const Map = dynamic(() => import("../components/Map"), { ssr: false });
 
@@ -41,11 +42,20 @@ export default function Home() {
                 <ul className="space-y-3">
                     {heritages.map((heritage) => (
                         <li key={heritage.id} onClick={() => setSelectedId(heritage.id)} className={`p-4 rounded-lg shadow-sm border flex items-center space-x-4 cursor-pointer transition ${selectedId === heritage.id ? "bg-blue-200 border-blue-400" : " bg-blue-50 border-blue-200"}`}>
-                            <img src={heritage.imageUrl} alt={heritage.name} className="w-20 h-14 object-cover rounded-md" />
+                            <Image src={heritage.imageUrl} alt={heritage.name} width={80} height={50}  />
                             <div>
                                 <p className="text-lg font-medium text-blue-800">{heritage.name}</p>
                                 <p className="text-sm text-gray-600">{heritage.address}</p>
-                                <Link href={`/heritage/${heritage.id}`} className="text-blue-500 hover:underline">
+                                <Link 
+                                    href={`/heritage/${heritage.id}`} 
+                                    className="text-blue-500 hover:underline"
+                                    onClick={(e) => {
+                                        // 親要素<li> の onClick で選択IDがセットされるのを防ぐ
+                                        e.stopPropagation();
+                                        // ページ遷移前に selectedId をリセットして地図アニメーションを止める
+                                        setSelectedId(null);
+                                      }}
+                                >
                                     詳細を見る
                                 </Link>
                             </div>

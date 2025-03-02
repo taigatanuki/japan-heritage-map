@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import Link from "next/link";
+import Image from "next/image";
 import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
 
@@ -24,17 +25,19 @@ type Heritage = {
 type MapProps = {
     heritages: Heritage[];
     selectedId: number | null;
-    setSelectedId: (id:number | null) => void;
+    setSelectedId: (id: number | null) => void;
 }
 
-const MapMover = ({ heritages, selectedId }: { heritages: Heritage[]; selectedId: number | null;}) => {
+const MapMover = ({ heritages, selectedId }: { heritages: Heritage[]; selectedId: number | null; }) => {
     const map = useMap();
 
+    console.log(map);
+    console.log(selectedId);
     useEffect(() => {
-        if(selectedId !== null) {
+        if (selectedId !== null) {
             const selectedHeritage = heritages.find((h) => h.id === selectedId);
-            if(selectedHeritage) {
-                map.setView([selectedHeritage.lat, selectedHeritage.lng], 7, {animate: true});
+            if (selectedHeritage) {
+                map.setView([selectedHeritage.lat, selectedHeritage.lng], 7, { animate: true });
             }
         }
     }, [selectedId, heritages, map])
@@ -59,10 +62,14 @@ const Map = ({ heritages, selectedId, setSelectedId }: MapProps) => {
                     }}
                 >
                     <Popup>
-                        <img src={heritage.imageUrl} alt={heritage.name} className="w-32 h-20 object-cover rounded-md mb-2" />
+                        <Image src={heritage.imageUrl} alt={heritage.name} width={10} height={50} className="rounded-md" />
                         <p className="text-lg font-bold">{heritage.name}</p>
                         <p className="text-sm text-gray-600">{heritage.address}</p>
-                        <Link href={`/heritage/${heritage.id}`} className="text-blue-500 hover:underline">
+                        <Link 
+                            href={`/heritage/${heritage.id}`}
+                            className="text-blue-500 hover:underline"
+                            onClick={() => setSelectedId(null) }
+                        >
                             詳細を見る
                         </Link>
                     </Popup>
